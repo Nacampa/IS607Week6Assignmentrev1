@@ -1,0 +1,99 @@
+# IS607
+# Week 6 - Assignment
+# Neil Acampa
+
+
+library(plyr)
+require(plyr)
+install.packages("devtools")
+install.packages("dplyr")
+library(dplyr)
+devtools::install_github("hadley/tidyr")
+devtools::install_github("hadley/rvest")
+install.packages("XML")
+require(XML)
+
+# Run the sample code below
+
+library(rvest)
+lego_movie <- html("http://www.imdb.com/title/tt1490017/")
+
+rating <- lego_movie %>% 
+  html_nodes("strong span") %>%
+  html_text() %>%
+  as.numeric()
+rating
+#> [1] 7.9
+
+cast <- lego_movie %>%
+  html_nodes("#titleCast .itemprop span") %>%http://en.wikipedia.org/wiki/Portal:Mathematics
+html_text()
+cast
+#>  [1] "Will Arnett"     "Elizabeth Banks" "Craig Berry"     "Alison Brie"    
+#>  [5] "David Burrows"   "Anthony Daniels" "Charlie Day"     "Amanda Farinos" 
+#>  [9] "Keith Ferguson"  "Will Ferrell"    "Will Forte"      "Dave Franco"    
+#> [13] "Morgan Freeman"  "Todd Hansen"     "Jonah Hill"     
+
+poster <- lego_movie %>%
+  html_nodes("#img_primary img") %>%
+  html_attr("src")
+poster
+
+# Find a web page from a different site and use rvest package functions to pull at least 
+# one piece of information from the web page
+
+serena <- html("http://www.imdb.com/title/tt1247690/?ref_=fn_al_tt_1")
+moviehrefs <- serena %>%
+  html_nodes("href") %>%
+  html_text() 
+moviehrefs
+
+movieimage <- serena %>%
+  html_nodes("img") %>%
+  html_attr("alt")
+movieimage
+wiki <- html("http://en.wikipedia.org/wiki/Main_Page")
+
+wikilinks <- wiki %>%
+  html_nodes("link") %>%
+  html_attr("rel") 
+wikilinks
+
+wikilinkstitle <- wiki %>%
+  html_nodes("link") %>%
+  html_attr("title") 
+wikilinkstitle
+
+wikiimage <- wiki %>%
+  html_nodes("img") %>%
+  html_attr("alt")
+wikiimage
+
+wikitable <- wiki %>%
+  html_nodes("table") %>%
+  html_attr("id")
+wikitable
+
+
+wiki1 <- html("http://en.wikipedia.org/wiki/Michael_Crichton")
+
+wikiimage <- wiki1 %>%
+  html_nodes("img") %>%
+  html_attr("alt")
+wikiimage
+
+
+wikitable <- wiki1 %>%
+  html_nodes("table") %>%
+  html_text("id") 
+html_table() 
+wikitable
+
+# Attempt at using R packaage xml to pull down table 15
+(result <- readHTMLTable("http://en.wikipedia.org/wiki/Michael_Crichton", which = 15, stringsAsFactors = FALSE))
+
+
+# The rvest package is easier to use and I am looking forward to learning this package
+
+#demo(package="rvest")
+#demo("tripadvisor","rvest")
